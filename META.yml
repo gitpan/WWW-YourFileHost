@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                WWW-YourFileHost
-version:             0.02
+version:             0.03
 abstract:            Get video informations from YourFileHost
 license:             ~
 generated_by:        ExtUtils::MakeMaker version 6.36
@@ -9,7 +9,6 @@ requires:
     CGI:                           0
     LWP::UserAgent:                0
     Test::More:                    0
-    Test::Perl::Critic:            0
     URI:                           0
     URI::Escape:                   0
     Web::Scraper:                  0

@@ -1,10 +1,9 @@
 Changes
-MANIFEST
-Makefile.PL
-README
 lib/WWW/YourFileHost.pm
+Makefile.PL
+MANIFEST
+META.yml
+README
 t/00.load.t
 t/01.t
-t/perlcritic.t
 t/pod.t
-META.yml

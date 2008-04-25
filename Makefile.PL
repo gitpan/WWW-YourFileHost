@@ -10,7 +10,6 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More'     => 0,
-        'Test::Perl::Critic' => 0,
         'URI'            => 0,
         'Web::Scraper'   => 0,
         'URI::Escape'    => 0,
