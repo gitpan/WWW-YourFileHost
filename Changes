@@ -1,4 +1,6 @@
 Revision history for WWW-YourFileHost
+0.05  FRI DEC 12 12:06:00 2008
+       Add swf method to get embed code
 0.04  MON MAY 26 01:00:00 2008
 0.03  FRI Apr 25 11:13:00 2008
        remove perlcritic test

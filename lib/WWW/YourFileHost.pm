@@ -10,7 +10,7 @@ use LWP::UserAgent;
 use CGI;
 use HTTP::Cookies;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub new {
     my ( $class, %opt ) = @_;
@@ -40,7 +40,8 @@ sub _scrape {
     $s->user_agent($self->{ua});
     my $res = $s->scrape( URI->new($url) );
     croak "video information is not found" unless $res->{value};
-    $res->{value} =~ m/&video=(.*?)&/;
+    $self->{swf} = $res->{value};
+    $self->{swf} =~ m/&video=(.*?)&/;
     $self->{api_url} = uri_unescape($1);
 }
 
@@ -78,6 +79,11 @@ sub id {
     return $id;
 }
 
+sub swf {
+    my $self = shift;
+    return $self->{swf};
+}
+
 1;
 
 __END__
@@ -90,18 +96,15 @@ WWW::YourFileHost - Get video informations from YourFileHost
 
     use LWP::UserAgent;
     use WWW::YourFileHost;
+    use Perl6::Say;
+
     my $url = "http://www.yourfilehost.com/media.php?cat=video&file=hoge.wmv";
     my $ua  = LWP::UserAgent->new( agent => "WWW::YourFileHost" );
-    $ua->cookie_jar(
-        HTTP::Cookies->new(
-            file     => '',
-            autosave => 1,
-        )
-    );
-    my $yourfilehost = WWW::YourFileHost->new( url => $url );
-    print $yourfilehost->photo . "\n";
-    print $yourfilehost->video_id . "\n";
-    print $yourfilehost->embed . "\n";
+    $ua->cookie_jar( HTTP::Cookies->new );
+    my $yourfilehost = WWW::YourFileHost->new( url => $url , ua => $ua );
+    say $yourfilehost->photo;
+    say $yourfilehost->video_id;
+    say $yourfilehost->embed;
 
 
 =head1 AUTHOR
