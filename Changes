@@ -1,4 +1,7 @@
 Revision history for WWW-YourFileHost
+
+0.06  FRI JUN 4 09:38:00 2010
+       Fixed for new flash player
 0.05  FRI DEC 12 12:06:00 2008
        Add swf method to get embed code
 0.04  MON MAY 26 01:00:00 2008

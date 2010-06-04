@@ -10,9 +10,6 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More'     => 0,
-        'URI'            => 0,
-        'Web::Scraper'   => 0,
-        'URI::Escape'    => 0,
         'LWP::UserAgent' => 0,
         'CGI'            => 0,
       },

@@ -3,14 +3,10 @@ package WWW::YourFileHost;
 use warnings;
 use strict;
 use Carp;
-use URI;
-use Web::Scraper;
-use URI::Escape;
 use LWP::UserAgent;
 use CGI;
-use HTTP::Cookies;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 sub new {
     my ( $class, %opt ) = @_;
@@ -30,25 +26,16 @@ sub _scrape {
     my $url  = $self->{url};
     croak "url is not yourfilehost link"
       unless $url =~ m!yourfilehost.com/media.php\?!;
-
-    my $s = scraper {
-        process
-          '//object[@id="objectPlayer"]' => process '//param[@name="movie"]',
-          'value'                        => '@value';
-    };
-
-    $s->user_agent($self->{ua});
-    my $res = $s->scrape( URI->new($url) );
-    croak "video information is not found" unless $res->{value};
-    $self->{swf} = $res->{value};
-    $self->{swf} =~ m/&video=(.*?)&/;
-    $self->{api_url} = uri_unescape($1);
+    my $res = $self->{ua}->get( $url );
+    croak("LWP Error: " . $res->status_line ) if $res->is_error;
+    my ($cid) = $res->content =~ m!http://cdn.yourfilehost.com/unit1/flash\d/\w{2}/(\w+)\.flv\?!;
+    $self->{id} = $cid;
 }
 
 sub _get_info {
     my $self    = shift;
     my $api_url = $self->{api_url}
-      || "http://www.yourfilehost.com/video-embed.php?vidlink=&cid="
+      || "http://www.yourfilehost.com/video-embed-code-new.php?vidlink=&cid="
       . $self->{id};
     my $ua  = $self->{ua}; #LWP::UserAgent->new();
     my $res = $ua->get($api_url);
