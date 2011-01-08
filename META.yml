@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               WWW-YourFileHost
-version:            0.06
+version:            0.07
 abstract:           Get video informations from YourFileHost
 author:
     - Yusuke Wada <yusuke@kamawada.com>

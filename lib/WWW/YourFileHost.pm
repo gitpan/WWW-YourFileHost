@@ -1,12 +1,11 @@
 package WWW::YourFileHost;
-
 use warnings;
 use strict;
 use Carp;
 use LWP::UserAgent;
 use CGI;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 sub new {
     my ( $class, %opt ) = @_;
@@ -16,7 +15,7 @@ sub new {
         $self->_scrape;
         $self->_get_info;
     }
-    $self->_get_info if $self->{id};
+    $self->_get_info unless $self->{id};
     croak "url or id param is requred" unless $self->{_query};
     $self;
 }
@@ -26,10 +25,12 @@ sub _scrape {
     my $url  = $self->{url};
     croak "url is not yourfilehost link"
       unless $url =~ m!yourfilehost.com/media.php\?!;
-    my $res = $self->{ua}->get( $url );
-    croak("LWP Error: " . $res->status_line ) if $res->is_error;
-    my ($cid) = $res->content =~ m!http://cdn.yourfilehost.com/unit1/flash\d/\w{2}/(\w+)\.flv\?!;
-    $self->{id} = $cid;
+    my $res = $self->{ua}->get($url);
+    croak "LWP Error: " . $res->status_line if $res->is_error;
+    my ($video_id) = $res->content =~
+      m!(http://cdn.yourfilehost.com/unit1/flash\d/\w{2}/\w+\.flv)\?!;
+    $self->{video_id} = $video_id;
+    ($self->{id}) = $video_id =~ /(\w+)\.flv/
 }
 
 sub _get_info {
@@ -51,7 +52,7 @@ sub photo {
 
 sub video_id {
     my $self = shift;
-    return $self->{_query}->param("video_id");
+    return $self->{video_id};
 }
 
 sub embed {
