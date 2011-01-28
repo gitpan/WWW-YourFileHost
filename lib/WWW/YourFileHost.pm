@@ -5,7 +5,7 @@ use Carp;
 use LWP::UserAgent;
 use CGI;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 sub new {
     my ( $class, %opt ) = @_;
@@ -28,7 +28,7 @@ sub _scrape {
     my $res = $self->{ua}->get($url);
     croak "LWP Error: " . $res->status_line if $res->is_error;
     my ($video_id) = $res->content =~
-      m!(http://cdn.yourfilehost.com/unit1/flash\d/\w{2}/\w+\.flv)\?!;
+      m!(http://cdn.yourfilehost.com/unit1/flash\d/\w{2}/\w+\.flv.*?)"!;
     $self->{video_id} = $video_id;
     ($self->{id}) = $video_id =~ /(\w+)\.flv/
 }
